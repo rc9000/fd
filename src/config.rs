@@ -122,6 +122,12 @@ pub struct Config {
 
     /// Whether or not to strip the './' prefix for search results
     pub strip_cwd_prefix: bool,
+
+    /// hostname for -N network paths
+    pub hostname: String,
+
+    /// hostname prepending enabled
+    pub network_path: bool,
 }
 
 impl Config {

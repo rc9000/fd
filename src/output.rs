@@ -125,7 +125,14 @@ fn print_entry_uncolorized_base<W: Write>(
     if let Some(ref separator) = config.path_separator {
         *path_string.to_mut() = replace_path_separator(&path_string, separator);
     }
-    write!(stdout, "{}", path_string)?;
+
+
+    if config.network_path {
+        write!(stdout, "{}:{}", config.hostname, path_string)?;
+    }else{
+        write!(stdout, "{}", path_string)?;
+    }
+
     print_trailing_slash(stdout, entry, config, None)?;
     write!(stdout, "{}", separator)
 }

@@ -236,6 +236,14 @@ fn construct_config(mut opts: Opts, pattern_regexps: &[String]) -> Result<Config
     let command = extract_command(&mut opts, colored_output)?;
     let has_command = command.is_some();
 
+    //let hostname = String::from("abc.example.com");
+    let hostname = hostname::get()?.to_string_lossy().to_string();
+    /* 
+    if opts.network_path {
+        opts.absolute_path = true;
+    }
+    */
+
     Ok(Config {
         case_sensitive,
         search_full_path: opts.full_path,
@@ -256,6 +264,8 @@ fn construct_config(mut opts: Opts, pattern_regexps: &[String]) -> Result<Config
         prune: opts.prune,
         threads: opts.threads().get(),
         max_buffer_time: opts.max_buffer_time,
+        hostname: hostname,
+        network_path: opts.network_path,
         ls_colors,
         interactive_terminal,
         file_types: opts.filetype.as_ref().map(|values| {

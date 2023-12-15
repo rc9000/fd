@@ -203,6 +203,14 @@ pub struct Opts {
     )]
     pub absolute_path: bool,
 
+    #[arg(
+        long,
+        short = 'N',
+        help = "Prepend hostname for scp copy/paste, implies -a",
+        long_help
+    )]
+    pub network_path: bool,
+
     /// Overrides --absolute-path
     #[arg(long, overrides_with = "absolute_path", hide = true, action = ArgAction::SetTrue)]
     relative_path: (),
@@ -664,7 +672,7 @@ impl Opts {
     }
 
     fn normalize_path(&self, path: &Path) -> PathBuf {
-        if self.absolute_path {
+        if self.absolute_path || self.network_path {
             filesystem::absolute_path(path.normalize().unwrap().as_path()).unwrap()
         } else {
             path.to_path_buf()

@@ -1,3 +1,5 @@
+#![allow(unused_imports)]
+
 use std::borrow::Cow;
 use std::env;
 use std::ffi::OsStr;
@@ -6,6 +8,7 @@ use std::io;
 #[cfg(any(unix, target_os = "redox"))]
 use std::os::unix::fs::FileTypeExt;
 use std::path::{Path, PathBuf};
+use regex::Regex;
 
 use normpath::PathExt;
 
@@ -13,7 +16,20 @@ use crate::dir_entry;
 
 pub fn path_absolute_form(path: &Path) -> io::Result<PathBuf> {
     if path.is_absolute() {
-        return Ok(path.to_path_buf());
+
+        //return Ok(path.to_path_buf());
+
+        /*  
+        let re = Regex::new("^/").unwrap();
+        let abs = path.to_string_lossy().to_string(); 
+        let chopped = re.replace(&abs, "").to_string();
+        let mut hostabs = Path::new("hostname:/moved").to_path_buf();
+        hostabs.push(chopped);
+
+        println!("str: {}", hostabs.to_string_lossy());
+
+        return Ok(hostabs);
+        */
     }
 
     let path = path.strip_prefix(".").unwrap_or(path);
